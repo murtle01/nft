@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MyNFT {
+    // NFT struct
+    struct NFT {
+        string name;
+        string metadataURI;
+        address owner;
+    }
+
+    // Array to store NFTs
+    NFT[] public nfts;
+
+    // Mapping to track ownership of NFTs
+    mapping(uint256 => address) public nftOwners;
+
+    // Event emitted when a new NFT is created
+    event NFTCreated(uint256 indexed tokenId, string name, address owner);
+
+    // Function to create a new NFT
+    function createNFT(string memory _name, string memory _metadataURI) public {
+        uint256 tokenId = nfts.length;
+        nfts.push(NFT(_name, _metadataURI, msg.sender));
+        nftOwners[tokenId] = msg.sender;
+        emit NFTCreated(tokenId, _name, msg.sender);
+    }
+
+    // Function to get the total number of NFTs
+    function totalNFTs() public view returns (uint256) {
+        return nfts.length;
+    }
+}
